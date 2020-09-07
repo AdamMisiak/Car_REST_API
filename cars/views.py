@@ -1,22 +1,51 @@
-from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-from rest_framework import permissions
-from cars.serializers import UserSerializer, GroupSerializer
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from cars.models import Car
+from cars.serializers import CarSerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
+@csrf_exempt
+def cars_list(request):
     """
-    API endpoint that allows users to be viewed or edited.
+    List all code cars, or create a new car.
     """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    if request.method == 'GET':
+        cars = Car.objects.all()
+        serializer = CarSerializer(cars, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = CarSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+@csrf_exempt
+def car_detail(request, pk):
     """
-    API endpoint that allows groups to be viewed or edited.
+    Retrieve, update or delete a code snippet.
     """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    try:
+        car = Car.objects.get(pk=pk)
+    except Car.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = CarSerializer(car)
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = CarSerializer(car, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        car.delete()
+        return HttpResponse(status=204)
