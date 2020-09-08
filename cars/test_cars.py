@@ -1,6 +1,8 @@
 from rest_framework.test import APITestCase
+from rest_framework import status
 from django.contrib.auth import get_user_model
 from cars.models import Car
+from rest_framework.reverse import reverse as api_reverse
 
 User = get_user_model()
 
@@ -21,3 +23,9 @@ class CarAPITestCase(APITestCase):
 	def test_car(self):
 		car_count = Car.objects.count()
 		assert car_count == 1
+
+	def test_get_list(self):
+		data = {}
+		url = api_reverse('cars:cars-list')
+		response = self.client.get(url, data, format='json')
+		assert response.status_code == status.HTTP_200_OK
