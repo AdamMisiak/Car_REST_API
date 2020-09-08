@@ -3,10 +3,14 @@ from cars.models import Car
 
 
 class CarSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Car
-        fields = ["id", "user", "model", "brand", "color", "horsepower", "added"]
+        fields = ["url", "id", "user", "model", "brand", "color", "horsepower", "added"]
         read_only_fields = ["added"]
+
+    def get_url(self, obj):
+        return obj.get_api_url()
 
     def validate_model(self, value):
         queryset = Car.objects.filter(model__iexact=value)
