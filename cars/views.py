@@ -9,18 +9,20 @@ from django.db.models import Q
 #                   mixins.CreateModelMixin,
 #                   generics.GenericAPIView):
 
+
 class CarsList(generics.ListCreateAPIView):
 
     queryset = Car.objects.all()
     serializer_class = CarSerializer
 
-
-    #http://127.0.0.1:8000/cars/?q=Audi
+    # http://127.0.0.1:8000/cars/?q=Audi
     def get_queryset(self):
         queryset = Car.objects.all()
         query = self.request.GET.get("q")
         if query is not None:
-            queryset = queryset.filter(Q(model__icontains=query)|Q(brand__icontains=query)).distinct()
+            queryset = queryset.filter(
+                Q(model__icontains=query) | Q(brand__icontains=query)
+            ).distinct()
         return queryset
 
     # def get(self, request, *args, **kwargs):
@@ -34,6 +36,7 @@ class CarsList(generics.ListCreateAPIView):
 #                     mixins.UpdateModelMixin,
 #                     mixins.DestroyModelMixin,
 #                     generics.GenericAPIView):
+
 
 class CarDetail(generics.RetrieveUpdateDestroyAPIView):
 
