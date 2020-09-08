@@ -5,7 +5,7 @@ from cars.models import Car
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
-        fields = ["id", "model", "brand", "color", "horsepower", "added"]
+        fields = ["id", "user", "model", "brand", "color", "horsepower", "added"]
         read_only_fields = ["added"]
 
     def validate_model(self, value):

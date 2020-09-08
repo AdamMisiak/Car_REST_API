@@ -2,6 +2,7 @@ from rest_framework import mixins
 from rest_framework import generics
 from cars.models import Car
 from cars.serializers import CarSerializer
+from cars.permissions import IsOwnerOrReadOnly
 from django.db.models import Q
 
 
@@ -42,6 +43,7 @@ class CarDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Car.objects.all()
     serializer_class = CarSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
     # def get(self, request, *args, **kwargs):
     #     return self.retrieve(request, *args, **kwargs)
