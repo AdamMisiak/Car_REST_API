@@ -2,12 +2,20 @@ from rest_framework import serializers
 from cars.models import Car
 
 
-class CarSerializer(serializers.ModelSerializer):
-    url = serializers.SerializerMethodField(read_only=True)
+class UserSerializer(serializers.Serializer):
+    email = serializers.EmailField(allow_blank=True)
+    username = serializers.CharField(max_length=100)
 
+
+class CarSerializer(serializers.ModelSerializer):
+    # dodac w fields url
+    #url = serializers.SerializerMethodField(read_only=True)
+
+    # dodatkowy serializer do podania info o userze
+    # user = UserSerializer(required=False)
     class Meta:
         model = Car
-        fields = ["url", "id", "user", "model", "brand", "color", "horsepower", "added"]
+        fields = ["id", "user", "model", "brand", "color", "horsepower", "added"]
         read_only_fields = ["id", "user", "added"]
 
     def get_url(self, obj):
