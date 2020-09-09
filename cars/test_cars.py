@@ -68,3 +68,15 @@ class CarAPITestCase(APITestCase):
 		response = self.client.put(url, data, format='json')
 		#print(response.data)
 		assert response.status_code == status.HTTP_200_OK
+
+	def test_post_item_with_user(self):
+		user_obj = User.objects.first()
+		data = {'model': 'test2', 'brand': 'test2', 'color': 'test2', 'horsepower': 123}
+
+		payload = payload_handler(user_obj)
+		token_response = encode_handler(payload)
+		self.client.credentials(HTTP_AUTHORIZATION='JWT ' + token_response)
+
+		url = api_reverse('cars:cars-list')
+		response = self.client.post(url, data, format='json')
+		assert response.status_code == status.HTTP_201_CREATED
