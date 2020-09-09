@@ -15,15 +15,29 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Car',
+            name="Car",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('added', models.DateTimeField(auto_now_add=True)),
-                ('model', models.CharField(max_length=100)),
-                ('brand', models.CharField(max_length=100)),
-                ('color', models.CharField(max_length=100)),
-                ('horsepower', models.IntegerField()),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("added", models.DateTimeField(auto_now_add=True)),
+                ("model", models.CharField(max_length=100)),
+                ("brand", models.CharField(max_length=100)),
+                ("color", models.CharField(max_length=100)),
+                ("horsepower", models.IntegerField()),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

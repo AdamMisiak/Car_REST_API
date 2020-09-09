@@ -4,6 +4,7 @@ from cars.models import Car
 
 class CarSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Car
         fields = ["url", "id", "user", "model", "brand", "color", "horsepower", "added"]
@@ -12,6 +13,7 @@ class CarSerializer(serializers.ModelSerializer):
     def get_url(self, obj):
         return obj.get_api_url()
 
+    # walidacja czy taki model istnieje + wykluczenie siebie samego z queryset
     def validate_model(self, value):
         queryset = Car.objects.filter(model__iexact=value)
         if self.instance:

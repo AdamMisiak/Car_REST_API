@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 from django.contrib.auth.models import User
 from rest_framework.reverse import reverse as api_reverse
 
@@ -20,4 +19,4 @@ class Car(models.Model):
         return self.user
 
     def get_api_url(self):
-        return api_reverse('cars:car-detail', kwargs={'pk': self.pk})
+        return api_reverse("cars:car-detail", kwargs={"pk": self.pk})
