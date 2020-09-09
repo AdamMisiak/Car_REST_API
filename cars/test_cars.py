@@ -65,6 +65,7 @@ class CarAPITestCase(APITestCase):
 		payload = payload_handler(user_obj)
 		token_response = encode_handler(payload)
 		self.client.credentials(HTTP_AUTHORIZATION='JWT ' + token_response)  # JWT <token> dodanie tokena do autoryzacji https://jpadilla.github.io/django-rest-framework-jwt/
+
 		response = self.client.put(url, data, format='json')
 		#print(response.data)
 		assert response.status_code == status.HTTP_200_OK
@@ -80,3 +81,23 @@ class CarAPITestCase(APITestCase):
 		url = api_reverse('cars:cars-list')
 		response = self.client.post(url, data, format='json')
 		assert response.status_code == status.HTTP_201_CREATED
+
+	def test_user_ownership(self):
+		# przypisanie auta do ownera
+		owner = User.objects.create(username='testuser2')
+		car = Car.objects.create(
+			user=owner, model='test', brand='test', color='test', horsepower=420
+		)
+		user_obj = User.objects.first()
+		assert user_obj.username != owner.username
+
+		# autoryzacja nowego usera
+		payload = payload_handler(user_obj)
+		token_rsp = encode_handler(payload)
+		self.client.credentials(HTTP_AUTHORIZATION='JWT ' + token_rsp)
+
+		url = car.get_api_url()
+		data = {'model': 'test2', 'brand': 'test2', 'color': 'test2', 'horsepower': 123}
+		# aktulizacja samochodu jako nie-owner
+		response = self.client.put(url, data, format='json')
+		assert response.status_code == status.HTTP_403_FORBIDDEN
