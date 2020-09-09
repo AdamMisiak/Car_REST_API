@@ -26,6 +26,10 @@ class CarsList(generics.ListCreateAPIView):
             ).distinct()
         return queryset
 
+    # aktualny user przypisany do auta
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
     # def get(self, request, *args, **kwargs):
     #     return self.list(request, *args, **kwargs)
     #

@@ -7,7 +7,7 @@ class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ["url", "id", "user", "model", "brand", "color", "horsepower", "added"]
-        read_only_fields = ["id", "added"]
+        read_only_fields = ["id", "user", "added"]
 
     def get_url(self, obj):
         return obj.get_api_url()
