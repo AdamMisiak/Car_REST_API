@@ -9,13 +9,13 @@ class UserSerializer(serializers.Serializer):
 
 class CarSerializer(serializers.ModelSerializer):
     # dodac w fields url
-    #url = serializers.SerializerMethodField(read_only=True)
+    url = serializers.SerializerMethodField(read_only=True)
 
     # dodatkowy serializer do podania info o userze
     # user = UserSerializer(required=False)
     class Meta:
         model = Car
-        fields = ["id", "user", "model", "brand", "color", "horsepower", "added"]
+        fields = ["url", "id", "user", "model", "brand", "color", "horsepower", "added"]
         read_only_fields = ["id", "user", "added"]
 
     def get_url(self, obj):
