@@ -21,26 +21,26 @@ To create virtual environment:
 python3 -m venv venv
 ```
 
-To install requirements:
+To build container:
 ```
-pip install -r requirements.txt
+docker-compose build
 ```
 
 To migrate database:
 ```
-python manage.py migrate
+docker-compose run web python manage.py migrate
 ```
 
 To create superuser:
 ```
-python manage.py createsuperuser
+docker-compose run web python manage.py createsuperuser
 ```
 
 ## Commands
 
-To run app locally:
+To run container:
 ```
-python manage.py runserver     
+docker-compose up  
 ```
 
 To list all objects or add new object:
@@ -67,7 +67,7 @@ http://127.0.0.1:8000/cars/?format=<format>
 
 To run tests:
 ```
-python manage.py test
+docker-compose run web python manage.py test
 ```
 
 ## Contact
