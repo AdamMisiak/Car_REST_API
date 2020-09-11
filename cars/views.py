@@ -1,6 +1,7 @@
 from rest_framework import generics
 from cars.models import Car
-from cars.serializers import CarSerializer
+from django.contrib.auth.models import User
+from cars.serializers import CarSerializer, UserSerializer
 from cars.permissions import IsOwnerOrReadOnly
 from django.db.models import Q
 
@@ -31,3 +32,22 @@ class CarDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CarSerializer
     permission_classes = [IsOwnerOrReadOnly]
 
+
+class UsersList(generics.ListCreateAPIView):
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    # # http://127.0.0.1:8000/cars/?q=Audi
+    # def get_queryset(self):
+    #     queryset = Car.objects.all()
+    #     query = self.request.GET.get("q")
+    #     if query is not None:
+    #         queryset = queryset.filter(
+    #             Q(model__icontains=query) | Q(brand__icontains=query)
+    #         ).distinct()
+    #     return queryset
+    #
+    # # aktualny user przypisany do auta
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
