@@ -5,6 +5,18 @@ from cars.serializers import CarSerializer, UserSerializer, UserFullSerializer
 from cars.permissions import IsOwnerOrReadOnly
 from django.db.models import Q
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'cars': reverse('cars:cars-list', request=request, format=format),
+        'users': reverse('cars:users-list', request=request, format=format)
+    })
+
 
 class CarsList(generics.ListCreateAPIView):
 
