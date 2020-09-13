@@ -1,7 +1,7 @@
 from rest_framework import generics
 from cars.models import Car
 from django.contrib.auth.models import User
-from cars.serializers import CarSerializer, UserSerializer, UserFullSerializer
+from cars.serializers import CarSerializer, UserFullSerializer
 from cars.permissions import IsOwnerOrReadOnly
 from django.db.models import Q
 

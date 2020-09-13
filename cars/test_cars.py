@@ -28,26 +28,32 @@ class CarAPITestCase(APITestCase):
         car_count = Car.objects.count()
         assert car_count == 1
 
-    def test_get_list(self):
+    def test_get_cars_list(self):
         data = {}
         url = api_reverse("cars:cars-list")
         response = self.client.get(url, data, format="json")
         assert response.status_code == status.HTTP_200_OK
 
-    def test_post_item(self):
+    def test_get_users_list(self):
+        data = {}
+        url = api_reverse("cars:users-list")
+        response = self.client.get(url, data, format="json")
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_post_car_item(self):
         data = {"model": "test2", "brand": "test2", "color": "test2", "horsepower": 123}
         url = api_reverse("cars:cars-list")
         response = self.client.post(url, data, format="json")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_get_item(self):
+    def test_get_car_item(self):
         car = Car.objects.first()
         data = {}
         url = car.get_api_url()
         response = self.client.get(url, data, format="json")
         assert response.status_code == status.HTTP_200_OK
 
-    def test_update_item(self):
+    def test_update_car_item(self):
         car = Car.objects.first()
         url = car.get_api_url()
         data = {
@@ -61,7 +67,16 @@ class CarAPITestCase(APITestCase):
         assert response.status_code == status.HTTP_405_METHOD_NOT_ALLOWED
         assert response2.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_update_item_with_user(self):
+    def test_update_user_item(self):
+        data = {
+            "username": "test234",
+        }
+        response = self.client.post('http://127.0.0.1:8000/users/1/', data, format="json")
+        response2 = self.client.put('http://127.0.0.1:8000/users/1/', data, format="json")
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response2.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_update_car_item_with_user(self):
         car = Car.objects.first()
         url = car.get_api_url()
         user_obj = User.objects.first()
@@ -82,7 +97,23 @@ class CarAPITestCase(APITestCase):
         # print(response.data)
         assert response.status_code == status.HTTP_200_OK
 
-    def test_post_item_with_user(self):
+    def test_update_user_item_with_auth(self):
+        user_obj = User.objects.first()
+        data = {
+            "username": "testtesttest",
+        }
+
+        payload = payload_handler(user_obj)
+        token_response = encode_handler(payload)
+        self.client.credentials(
+            HTTP_AUTHORIZATION="JWT " + token_response
+        )  # JWT <token> dodanie tokena do autoryzacji https://jpadilla.github.io/django-rest-framework-jwt/
+
+        response = self.client.put('http://127.0.0.1:8000/users/1/', data, format="json")
+        # print(response.data)
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_post_car_item_with_user(self):
         user_obj = User.objects.first()
         data = {"model": "test2", "brand": "test2", "color": "test2", "horsepower": 123}
 
