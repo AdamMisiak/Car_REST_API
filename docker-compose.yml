@@ -1,11 +1,32 @@
 version: '3'
 
 services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: car_rest_api
+    ports:
+      - "5432"
+    networks:
+      - backend
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+#    command to web wait for db
+    command: ["./wait-for-it.sh", "db:5432", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+    #command: python manage.py runserver 0.0.0.0:8000
 #    mapping local files to Docker files (automatically)
     volumes:
       - .:/code
     ports:
       - "8000:8000"
+    links:
+      - db:db
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
