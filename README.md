@@ -1,6 +1,6 @@
 # Car REST API
 
-Simple REST API created for practice purpose. Basic CRUD implemented using Django REST Framework.
+Simple REST API created for practice purpose. Basic CRUD implemented using Django REST Framework. Application is divided into 2 containers: DRF (web) and Postgres (db).
 
 
 ## Table of contents
@@ -14,6 +14,7 @@ Simple REST API created for practice purpose. Basic CRUD implemented using Djang
 * Python version: 3.7
 * Django version: 3.1.1
 * DRF version: 3.11.1
+* Docker version: 19.03.6
 
 ## Setup
 To create virtual environment:
@@ -38,7 +39,7 @@ docker-compose run web python manage.py createsuperuser
 
 ## Commands
 
-To run container:
+To run containers:
 ```
 docker-compose up  
 ```
