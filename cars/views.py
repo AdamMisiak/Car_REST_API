@@ -10,12 +10,14 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def api_root(request, format=None):
-    return Response({
-        'cars': reverse('cars:cars-list', request=request, format=format),
-        'users': reverse('cars:users-list', request=request, format=format)
-    })
+    return Response(
+        {
+            "cars": reverse("cars:cars-list", request=request, format=format),
+            "users": reverse("cars:users-list", request=request, format=format),
+        }
+    )
 
 
 class CarsList(generics.ListCreateAPIView):
@@ -65,4 +67,3 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = User.objects.all()
     serializer_class = UserFullSerializer
-

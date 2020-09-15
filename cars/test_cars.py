@@ -71,8 +71,12 @@ class CarAPITestCase(APITestCase):
         data = {
             "username": "test234",
         }
-        response = self.client.post('http://127.0.0.1:8000/users/1/', data, format="json")
-        response2 = self.client.put('http://127.0.0.1:8000/users/1/', data, format="json")
+        response = self.client.post(
+            "http://127.0.0.1:8000/users/1/", data, format="json"
+        )
+        response2 = self.client.put(
+            "http://127.0.0.1:8000/users/1/", data, format="json"
+        )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert response2.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -109,7 +113,9 @@ class CarAPITestCase(APITestCase):
             HTTP_AUTHORIZATION="JWT " + token_response
         )  # JWT <token> dodanie tokena do autoryzacji https://jpadilla.github.io/django-rest-framework-jwt/
 
-        response = self.client.put('http://127.0.0.1:8000/users/1/', data, format="json")
+        response = self.client.put(
+            "http://127.0.0.1:8000/users/1/", data, format="json"
+        )
         # print(response.data)
         assert response.status_code == status.HTTP_200_OK
 

@@ -4,10 +4,17 @@ from django.contrib.auth.models import User
 
 
 class UserFullSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name", "email", "date_joined", "is_superuser"]
+        fields = [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "date_joined",
+            "is_superuser",
+        ]
         read_only_fields = ["id", "date_joined", "is_superuser"]
 
 
@@ -21,7 +28,7 @@ class CarSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField(read_only=True)
 
     # dodatkowy serializer do podania info o userze
-    #user = UserSerializer(required=False)
+    # user = UserSerializer(required=False)
 
     class Meta:
         model = Car
