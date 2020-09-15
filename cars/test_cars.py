@@ -101,23 +101,6 @@ class CarAPITestCase(APITestCase):
         # print(response.data)
         assert response.status_code == status.HTTP_200_OK
 
-    def test_update_user_item_with_auth(self):
-        user_obj = User.objects.first()
-        data = {
-            "username": "testtesttest",
-        }
-
-        payload = payload_handler(user_obj)
-        token_response = encode_handler(payload)
-        self.client.credentials(
-            HTTP_AUTHORIZATION="JWT " + token_response
-        )  # JWT <token> dodanie tokena do autoryzacji https://jpadilla.github.io/django-rest-framework-jwt/
-
-        response = self.client.put(
-            "http://127.0.0.1:8000/users/1/", data, format="json"
-        )
-        # print(response.data)
-        assert response.status_code == status.HTTP_200_OK
 
     def test_post_car_item_with_user(self):
         user_obj = User.objects.first()
