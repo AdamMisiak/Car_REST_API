@@ -1,6 +1,6 @@
 # Car REST API
 
-Simple REST API created for practice purpose. Basic CRUD implemented using Django REST Framework. Application is divided into 2 containers: DRF (web) and Postgres (db).
+REST API created for practice purpose. Basic CRUD implemented using Django REST Framework. Application is divided into 2 containers: DRF (web) and Postgres (db).
 
 
 ## Table of contents
